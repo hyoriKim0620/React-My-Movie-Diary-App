@@ -2,57 +2,59 @@ import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useEffect, useState } from "react";
 import { EmptyObject } from "../../utils/EmptyObject";
-import axios from "axios";
-import { setCurrentUser, setWatchMovie } from "../../store/user/userSlice";
+import { setCurrentUser } from "../../store/user/userSlice";
+import { getMyMovieData } from "../../utils/LocalStorageApi";
+// import axios from "axios";
 
 const MyMovieData = () => {
   const dispatch = useAppDispatch();
-  const { currentUser, watchMovie } = useAppSelector((state) => state.user);
+  const { currentUser } = useAppSelector((state) => state.user);
+  const [watchMovie, setWatchMovie] = useState(0);
   const [time, setTime] = useState(0);
   const [minutes, setMinutes] = useState(0);
 
   useEffect(() => {
     if (EmptyObject(currentUser)) {
       getCurrentUser();
-      setTimeMinutes();
-      setWatchMovieArray();
+      setMyMovieData();
     } else {
-      setTimeMinutes();
-      setWatchMovieArray();
+      setMyMovieData();
     }
   }, []);
 
   const getCurrentUser = () => {
-    const testUserEmail = "test@naver.com";
+    const testUser = {
+      id: "1",
+      name: "test",
+      hashedPassword: "1111",
+      email: "test@naver.com",
+      image: "",
+      honeyMovieIds: "[]",
+      myReview: "[]",
+      runtime: 0,
+    };
 
-    axios
-      .get(`/api/userInfo/${testUserEmail}`)
-      .then((res) => {
-        const data = res.data.data[0];
-        dispatch(setCurrentUser(data));
-      })
-      .catch();
+    const user = localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user") as string)
+      : testUser;
+
+    dispatch(setCurrentUser(user));
   };
 
-  const setWatchMovieArray = () => {
-    if (currentUser.email !== "") {
-      const honeyMovieIdsString = currentUser?.honeyMovieIds as string;
-      const movies = JSON.parse(honeyMovieIdsString || "[]") as string[];
-      dispatch(setWatchMovie(movies.length || 0));
+  const setMyMovieData = () => {
+    const myMovieData = getMyMovieData();
+    const runtime = myMovieData.runtime;
+
+    if (runtime && runtime > 0) {
+      const time = runtime >= 60 ? Math.floor(runtime / 60) : 0;
+      const minutes = runtime % 60;
+
+      setTime(time);
+      setMinutes(minutes);
+      setWatchMovie(myMovieData.watchMovieCnt);
+    } else {
+      return;
     }
-  };
-
-  const setTimeMinutes = () => {
-    console.log("currentUser : ", currentUser, currentUser?.runtime);
-    const time = currentUser?.runtime
-      ? currentUser.runtime >= 60
-        ? Math.floor(currentUser.runtime / 60)
-        : 0
-      : 0;
-    const minutes = currentUser?.runtime ? currentUser?.runtime % 60 : 0;
-
-    setTime(time);
-    setMinutes(minutes);
   };
 
   return (

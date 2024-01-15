@@ -7,7 +7,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState({ email: "", password: "" });
-  const { email, password } = inputValue;
+  // const { email, password } = inputValue;
 
   useEffect(() => {
     window.addEventListener("focusout", checkIdValidation);
@@ -25,7 +25,6 @@ const LoginPage = () => {
   };
 
   const handleClick = () => {
-    console.log("로그인하기!", email, password);
     setIsLoading(true);
 
     try {

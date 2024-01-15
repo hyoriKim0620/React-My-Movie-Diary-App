@@ -12,3 +12,11 @@ export const ModalContainer = styled.div`
   background: rgba(0, 0, 0, 0.4) !important;
   z-index: 500;
 `;
+
+export const ModalButton = styled.button`
+  width: 100%;
+  background-color: #ffcc70;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 5px 0;
+`;

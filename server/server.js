@@ -16,7 +16,8 @@ app.get("/", (req, res) => {
 // "/api"로 시작하는 모든 요청은 apiRoutes에서 처리
 app.use("/api", apiRoutes);
 
-const PORT = 4000;
+// eslint-disable-next-line no-undef
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server run : http://localhost:${PORT}/`);
 });

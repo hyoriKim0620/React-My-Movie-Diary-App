@@ -12,9 +12,9 @@ import { IoSearch } from "react-icons/io5";
 import { MovieProps } from "../HomePage";
 import MovieCard from "./../../components/movie/movieCard";
 import { setCurrentUser } from "../../store/user/userSlice";
-import axios from "axios";
 import { EmptyObject } from "../../utils/EmptyObject";
-import styled from "styled-components";
+import { GetHoneyMovie } from "../../utils/LocalStorageApi";
+import EmptyState from "../../components/EmptyState";
 
 const MyHoneyPage = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +30,7 @@ const MyHoneyPage = () => {
     : [];
   const [movies, setMovies] = useState(initialMovies);
   const [searchMovies, setSearchMovies] = useState(initialMovies);
+  const { honeyMovie } = useAppSelector((state) => state.movie);
 
   useEffect(() => {
     if (EmptyObject(currentUser)) getCurrentUser();
@@ -39,29 +40,31 @@ const MyHoneyPage = () => {
     }
 
     setHoneyMovies();
-  }, [currentUser]);
+  }, [currentUser, honeyMovie]);
 
   const getCurrentUser = () => {
-    const testUserEmail = "test@naver.com";
+    const testUser = {
+      id: "1",
+      name: "test",
+      hashedPassword: "1111",
+      email: "test@naver.com",
+      image: "",
+      honeyMovieIds: "[]",
+      myReview: "[]",
+      runtime: 0,
+    };
 
-    axios
-      .get(`/api/userInfo/${testUserEmail}`)
-      .then((res) => {
-        const data = res.data.data[0];
-        dispatch(setCurrentUser(data));
-      })
-      .catch();
+    const user = localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user") as string)
+      : testUser;
+
+    dispatch(setCurrentUser(user));
   };
 
   const setHoneyMovies = () => {
-    console.log("currentUser : ", currentUser);
-    if (currentUser.email !== "") {
-      const movieIds = JSON.parse(currentUser?.honeyMovieIds as string);
-      const honeyMovies = [...movieIds];
-
-      setMovies(honeyMovies);
-      setSearchMovies(honeyMovies);
-    }
+    const honeyMovies = GetHoneyMovie();
+    setMovies(honeyMovies);
+    setSearchMovies(honeyMovies);
   };
 
   const handleClick = () => {
@@ -89,63 +92,53 @@ const MyHoneyPage = () => {
 
   return (
     <Container>
-      <Header>
-        <div>
-          <ToggleButtons />
-        </div>
-        {!showSearchBox ? (
-          <>
-            <div className="main_search">
-              <IoSearch size={22} onClick={() => handleClick()} />
-            </div>
-          </>
-        ) : (
-          <div className="search_header">
-            <Input
-              ref={inputRef}
-              type="text"
-              placeholder="영화 제목을 입력해주세요."
-              onKeyDown={handleEnterKeyPress}
-              onChange={(e) => handleChange(e)}
-              value={searchValue}
-            />
-            <IoSearch size={22} onClick={() => filterMovies()} />
-          </div>
-        )}
-      </Header>
       {searchMovies.length > 0 ? (
-        <MovieBox
-          className={`${isSmall ? "oneRowTwoColumn" : "oneRowOneColumn"}`}
-        >
-          {searchMovies.map((movie: MovieProps) => (
-            <MovieCard
-              key={movie.id}
-              movie={movie}
-              isSmall={isSmall}
-              currentUser={currentUser}
-            />
-          ))}
-        </MovieBox>
+        <>
+          <Header>
+            <div>
+              <ToggleButtons />
+            </div>
+            {!showSearchBox ? (
+              <>
+                <div className="main_search">
+                  <IoSearch size={22} onClick={() => handleClick()} />
+                </div>
+              </>
+            ) : (
+              <div className="search_header">
+                <Input
+                  ref={inputRef}
+                  type="text"
+                  placeholder="영화 제목을 입력해주세요."
+                  onKeyDown={handleEnterKeyPress}
+                  onChange={(e) => handleChange(e)}
+                  value={searchValue}
+                />
+                <IoSearch size={22} onClick={() => filterMovies()} />
+              </div>
+            )}
+          </Header>
+          <MovieBox
+            className={`${isSmall ? "oneRowTwoColumn" : "oneRowOneColumn"}`}
+          >
+            {searchMovies.map((movie: MovieProps) => (
+              <MovieCard
+                key={movie.id}
+                movie={movie}
+                isSmall={isSmall}
+                currentUser={currentUser}
+              />
+            ))}
+          </MovieBox>
+        </>
       ) : (
-        <EmptyContent>
-          <img src="/base_bee.png" alt="empty-myHoney-image" width={"120px"} />
-          <div className="pt-3">My 꿀 영화가 없습니다.</div>
-          <div>하트를 클릭하여 추가해주세요.</div>
-        </EmptyContent>
+        <EmptyState
+          title="My 꿀 영화가 없습니다."
+          sub_title="하트를 클릭하여 추가해주세요."
+        />
       )}
     </Container>
   );
 };
 
 export default MyHoneyPage;
-
-const EmptyContent = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  background: #fff78a;
-`;

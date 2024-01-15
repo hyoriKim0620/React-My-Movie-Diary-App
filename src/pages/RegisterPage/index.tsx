@@ -10,7 +10,7 @@ const RegisterPage = () => {
     email: "",
     password: "",
   });
-  const { name, email, password } = inputValue;
+  // const { name, email, password } = inputValue;
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -22,7 +22,7 @@ const RegisterPage = () => {
 
   const handleClick = () => {
     setIsLoading(true);
-    console.log("회원가입하기!", name, email, password);
+    // console.log("회원가입하기!", name, email, password);
 
     setTimeout(() => {
       setIsLoading(false);

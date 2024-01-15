@@ -49,10 +49,7 @@ const MovieCard = ({ movie, isSmall, currentUser }: MovieCardProps) => {
             {movie.adult ? <AdultBadge>19</AdultBadge> : <span></span>}
             <div>
               <TiPencil size={20} />
-              <HoneyHeartButton
-                movieId={`${movie.id}`}
-                currentUser={currentUser}
-              />
+              <HoneyHeartButton movieId={movie.id} currentUser={currentUser} />
             </div>
           </div>
           {isSmall ? (

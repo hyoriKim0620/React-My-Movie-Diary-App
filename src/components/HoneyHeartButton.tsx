@@ -3,7 +3,7 @@ import { FaRegHeart } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 
 interface HoneyHeartButtonProps {
-  movieId: string;
+  movieId: number;
   currentUser: User;
 }
 

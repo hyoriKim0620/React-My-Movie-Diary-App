@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import requests from "../../api/movie/request";
 import axiosCustom from "../../api/movie/axios";
-import axios from "axios";
 import { IoSearch } from "react-icons/io5";
 import {
   Container,
@@ -40,9 +39,9 @@ export interface MovieProps {
 }
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
-  const { isSmall } = useAppSelector((state) => state.movie);
   const storedMovies = localStorage.getItem("movies");
   const initialMovies: MovieProps[] = storedMovies
     ? JSON.parse(storedMovies)
@@ -51,7 +50,7 @@ const HomePage = () => {
   const [showSearchBox, setShowSearchBox] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const { currentUser } = useAppSelector((state) => state.user);
-  const navigate = useNavigate();
+  const { isSmall, honeyMovie } = useAppSelector((state) => state.movie);
 
   const fetchMovieData = useCallback(async () => {
     if (initialMovies.length > 0) {
@@ -63,8 +62,6 @@ const HomePage = () => {
       await setMovies(response.data.results);
       localStorage.setItem("movies", JSON.stringify(response.data.results));
     }
-
-    console.log("movies: ", movies);
   }, []);
 
   const fetchSearchMovie = async () => {
@@ -89,16 +86,32 @@ const HomePage = () => {
   }, [fetchMovieData]);
 
   useEffect(() => {
-    const testUserEmail = "test@naver.com";
+    const testUser = {
+      id: "1",
+      name: "test",
+      hashedPassword: "1111",
+      email: "test@naver.com",
+      image: "",
+      honeyMovieIds: "[]",
+      myReview: "[]",
+      runtime: 0,
+    };
 
-    axios
-      .get(`/api/userInfo/${testUserEmail}`)
-      .then((res) => {
-        const data = res.data.data[0];
-        dispatch(setCurrentUser(data));
-      })
-      .catch();
-  }, []);
+    const user = localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user") as string)
+      : testUser;
+
+    dispatch(setCurrentUser(user));
+    // [Node 서버 & mysql 사용]
+    // const testUserEmail = "test@naver.com";
+    // axios
+    //   .get(`/api/userInfo/${testUserEmail}`)
+    //   .then((res) => {
+    //     const data = res.data.data[0];
+    //     dispatch(setCurrentUser(data));
+    //   })
+    //   .catch();
+  }, [honeyMovie]);
 
   const handleClick = () => {
     if (showSearchBox) return;
