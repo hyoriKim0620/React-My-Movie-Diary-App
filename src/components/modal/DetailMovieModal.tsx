@@ -75,7 +75,7 @@ const DetailMovieModal = () => {
           )}
           <ModalVoteDate>
             <div className="text-xs text-right text-zinc-600">
-              {getYMDFormat(selectMovie.release_date)}
+              {getYMDFormat(selectMovie.release_date || "")}
             </div>
             <div className="text-sm flex items-center justify-end py-1">
               <FaStar color={"#FFCC70"} />
