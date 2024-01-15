@@ -1,3 +1,15 @@
+Demo : https://react-my-movie-diary-88e7713vh-hyoris-projects.vercel.app/
+
+"나의 영화 다이어리 - My Movie Diary" Application입니다.
+
+모바일 어플리케이션에 최적화 되어있기 때문에 모바일 기기 사이즈로 보시는 걸 추천드립니다!
+ex) iPhone12, iPhone12 Pro, iPhoneXR 등등
+
+
+
+
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
