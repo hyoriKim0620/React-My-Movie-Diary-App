@@ -55,8 +55,8 @@ const MyHoneyPage = () => {
 
   const setHoneyMovies = () => {
     console.log("currentUser : ", currentUser);
-    if (!EmptyObject(currentUser)) {
-      const movieIds = JSON.parse(currentUser.honeyMovieIds);
+    if (currentUser.email !== "") {
+      const movieIds = JSON.parse(currentUser?.honeyMovieIds as string);
       const honeyMovies = [...movieIds];
 
       setMovies(honeyMovies);

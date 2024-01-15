@@ -10,11 +10,9 @@ const LoginPage = () => {
   const { email, password } = inputValue;
 
   useEffect(() => {
-    window.addEventListener("focusout", (e) => checkIdValidation(e.target));
+    window.addEventListener("focusout", checkIdValidation);
     return () => {
-      window.removeEventListener("focusout", (e) =>
-        checkIdValidation(e.target)
-      );
+      window.removeEventListener("focusout", checkIdValidation);
     };
   }, []);
 
@@ -39,8 +37,10 @@ const LoginPage = () => {
     }
   };
 
-  const checkIdValidation = (target: { name: string; value: string }) => {
-    const { name, value } = target;
+  const checkIdValidation = (event: FocusEvent) => {
+    const target = event.target as HTMLInputElement;
+    const name = target.name as string;
+    const value = target.value as string;
 
     if (name === "email") {
       const isValidId = checkIdRegex(value);

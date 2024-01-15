@@ -1,13 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { User } from "../../hooks/honeyMovie";
 
 interface UserState {
-  currentUser: object;
+  currentUser: User;
   watchMovie: number;
   watchMovieRunTime: number;
 }
 
 const initialState: UserState = {
-  currentUser: {},
+  currentUser: {
+    id: "",
+    name: "",
+    hashedPassword: "",
+    email: "",
+    image: "",
+    honeyMovieIds: "[]",
+    myReview: "[]",
+    runtime: 0,
+  },
   watchMovie: 0,
   watchMovieRunTime: 0,
 };

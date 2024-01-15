@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { ImQuotesLeft, ImQuotesRight } from "react-icons/im";
 import { getNumberFormat } from "../../utils/numberFormat";

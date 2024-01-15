@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import NavBarItem from "./NavBarItem";
 import { pushNavMenu, setSelectMenu } from "../../store/sideBar/sideBarSlice";

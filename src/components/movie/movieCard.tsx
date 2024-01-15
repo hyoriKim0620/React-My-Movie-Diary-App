@@ -1,6 +1,10 @@
-import React from "react";
 import { MovieProps } from "../../pages/HomePage";
-import { AdultBadge, MovieCard, MovieCardItem, MovieImg } from "./movie.styles";
+import {
+  AdultBadge,
+  MovieCardContainer,
+  MovieCardItem,
+  MovieImg,
+} from "./movie.styles";
 import OneColumnCard from "./oneColumnCard";
 import TwoColumnCard from "./twoColumnCard";
 import { User } from "../../hooks/honeyMovie";
@@ -25,10 +29,10 @@ export interface ColumnCardProps {
   release_date: string;
 }
 
-const movieCard = ({ movie, isSmall, currentUser }: MovieCardProps) => {
+const MovieCard = ({ movie, isSmall, currentUser }: MovieCardProps) => {
+  const dispatch = useAppDispatch();
   const movieTitle = movie.name || movie.title;
   const movieImg = movie.backdrop_path || movie.poster_path;
-  const dispatch = useAppDispatch();
 
   const handleClick = async () => {
     dispatch(setSelectMovie(movie));
@@ -36,7 +40,7 @@ const movieCard = ({ movie, isSmall, currentUser }: MovieCardProps) => {
   };
 
   return (
-    <MovieCard onClick={() => handleClick()}>
+    <MovieCardContainer onClick={() => handleClick()}>
       <MovieCardItem>
         <div
           className={`${isSmall ? "h-[44%]" : "h-[40%]"} px-[10px] py-[5px]`}
@@ -89,8 +93,8 @@ const movieCard = ({ movie, isSmall, currentUser }: MovieCardProps) => {
           />
         </MovieImg>
       </MovieCardItem>
-    </MovieCard>
+    </MovieCardContainer>
   );
 };
 
-export default movieCard;
+export default MovieCard;

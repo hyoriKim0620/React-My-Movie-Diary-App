@@ -2,7 +2,6 @@ import axios from "axios";
 import { useMemo } from "react";
 // import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { Movie } from "../store/modal/modalSlice";
 import axiosCustom from "../api/movie/axios";
 
 export interface User {
@@ -11,20 +10,20 @@ export interface User {
   hashedPassword: string;
   email: string;
   image: string;
-  honeyMovieIds: string[];
-  myReview: string[];
+  honeyMovieIds: string; // '[]';
+  myReview: string; // '[]';
+  runtime?: number;
 }
 
 interface useHoneyMovieProps {
   movieId: string;
-  movie?: Movie | null;
   currentUser?: User | null;
 }
 
 const useHoneyMovie = ({ movieId, currentUser }: useHoneyMovieProps) => {
   // const navigate = useNavigate();
   const hasHoneyMovie = useMemo(() => {
-    const list = currentUser?.honeyMovieIds || [];
+    const list = (currentUser?.honeyMovieIds as string) || "";
     return list.includes(movieId);
   }, [currentUser, movieId]);
 
@@ -56,17 +55,13 @@ const useHoneyMovie = ({ movieId, currentUser }: useHoneyMovieProps) => {
     };
 
     try {
-      let request;
-
       if (hasHoneyMovie) {
         const movieData = { email: currentUser.email, movieId: movieId };
-        request = await axios.delete(
-          `/api/honeyMovies/${JSON.stringify(movieData)}`
-        );
+        await axios.delete(`/api/honeyMovies/${JSON.stringify(movieData)}`);
       } else {
         const email = currentUser.email;
 
-        request = await axios
+        await axios
           .post(`/api/honeyMovies/${email}`, {
             data: movie,
           })

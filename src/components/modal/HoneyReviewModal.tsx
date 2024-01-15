@@ -1,15 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { ModalContainer } from "./modal.styles";
 import styled from "styled-components";
 import { Input } from "../../pages/loginRegister.styles";
 import {
-  setSelectMovie,
+  // setSelectMovie,
   toggleHoneyReviewModal,
 } from "../../store/modal/modalSlice";
 import { useAppDispatch } from "../../hooks/redux";
 
 const HoneyReviewModal = () => {
-  const modalRef = useRef();
+  const modalRef = React.useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -19,8 +19,10 @@ const HoneyReviewModal = () => {
     };
   }, []);
 
-  const checkModalRef = () => {
-    if (modalRef.current && !modalRef.current.contains(event.target)) {
+  const checkModalRef = (event: MouseEvent) => {
+    const target = event.target as HTMLDivElement;
+
+    if (modalRef.current && !modalRef.current.contains(target)) {
       closeHoneyReviewModal();
     }
   };

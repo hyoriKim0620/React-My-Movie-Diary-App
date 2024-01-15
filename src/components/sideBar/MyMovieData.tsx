@@ -3,13 +3,11 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useEffect, useState } from "react";
 import { EmptyObject } from "../../utils/EmptyObject";
 import axios from "axios";
-import { setCurrentUser } from "../../store/user/userSlice";
+import { setCurrentUser, setWatchMovie } from "../../store/user/userSlice";
 
 const MyMovieData = () => {
   const dispatch = useAppDispatch();
-  const { currentUser, watchMovie, watchMovieRunTime } = useAppSelector(
-    (state) => state.user
-  );
+  const { currentUser, watchMovie } = useAppSelector((state) => state.user);
   const [time, setTime] = useState(0);
   const [minutes, setMinutes] = useState(0);
 
@@ -17,10 +15,10 @@ const MyMovieData = () => {
     if (EmptyObject(currentUser)) {
       getCurrentUser();
       setTimeMinutes();
-      setWatchMovie();
+      setWatchMovieArray();
     } else {
       setTimeMinutes();
-      // setWatchMovie();
+      setWatchMovieArray();
     }
   }, []);
 
@@ -36,10 +34,11 @@ const MyMovieData = () => {
       .catch();
   };
 
-  const setWatchMovie = () => {
-    if (!EmptyObject(currentUser)) {
-      const movies = JSON.parse(currentUser.honeyMovieIds);
-      dispatch(setWatchMovie(movies.length));
+  const setWatchMovieArray = () => {
+    if (currentUser.email !== "") {
+      const honeyMovieIdsString = currentUser?.honeyMovieIds as string;
+      const movies = JSON.parse(honeyMovieIdsString || "[]") as string[];
+      dispatch(setWatchMovie(movies.length || 0));
     }
   };
 

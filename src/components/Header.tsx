@@ -19,9 +19,6 @@ const Header = ({ pathname }: HeaderProps) => {
       ? "회원가입"
       : "";
   const dispatch = useAppDispatch();
-  const writeMyReview = () => {
-    console.log("Write my review");
-  };
 
   if (loginRegister !== "") {
     return (

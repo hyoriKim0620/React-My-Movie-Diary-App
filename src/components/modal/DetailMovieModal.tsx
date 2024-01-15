@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ModalContainer } from "./modal.styles";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
@@ -12,7 +12,7 @@ import {
 } from "../../store/modal/modalSlice";
 
 const DetailMovieModal = () => {
-  const modalRef = useRef();
+  const modalRef = React.useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const { selectMovie } = useAppSelector((state) => state.modal);
   const [textAddDetail, setTextAddDetail] = useState(true);
@@ -24,8 +24,10 @@ const DetailMovieModal = () => {
     };
   }, []);
 
-  const checkModalRef = () => {
-    if (modalRef.current && !modalRef.current.contains(event.target)) {
+  const checkModalRef = (event: MouseEvent) => {
+    const target = event.target as HTMLDivElement;
+
+    if (modalRef.current && !modalRef.current.contains(target)) {
       closeDetailModal();
     }
   };
