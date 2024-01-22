@@ -200,7 +200,7 @@ const HoneyReviewModal = () => {
               disabled
             />
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center z-50">
             <span className="inline-block w-[100px]">시청일 : </span>
             <Input
               type="date"

@@ -5,7 +5,7 @@ import { getYMDFormat } from "../../utils/dayjs";
 import styled from "styled-components";
 import { getNumberFormat } from "../../utils/numberFormat";
 
-const oneColumnCard = ({
+const OneColumnCard = ({
   movie_title,
   vote_average,
   vote_count,
@@ -35,7 +35,7 @@ const oneColumnCard = ({
   );
 };
 
-export default oneColumnCard;
+export default OneColumnCard;
 
 const MovieTitleAndVote = styled.div`
   display: flex;

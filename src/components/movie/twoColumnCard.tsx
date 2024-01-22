@@ -4,16 +4,36 @@ import { getNumberFormat } from "../../utils/numberFormat";
 import { ColumnCardProps } from "./movieCard";
 import { FaStar } from "react-icons/fa6";
 import { getYMDFormat } from "../../utils/dayjs";
+import { useEffect, useState } from "react";
 
-const twoColumnCard = ({
+const TwoColumnCard = ({
   movie_title,
   vote_average,
   vote_count,
   release_date,
 }: ColumnCardProps) => {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const maxContainerWidth = 1280;
+
   return (
     <>
-      <MovieTitle className="w-[calc((100vw/2)-40px)]">
+      <MovieTitle
+        className={`${
+          maxContainerWidth <= width ? "w-[590px]" : "w-[calc((100vw/2)-40px)]"
+        }`}
+      >
         <ImQuotesLeft className="quotes" />
         <div className="movie-twoCard-title">{movie_title}</div>
         <ImQuotesRight className="quotes" />
@@ -32,7 +52,7 @@ const twoColumnCard = ({
   );
 };
 
-export default twoColumnCard;
+export default TwoColumnCard;
 
 const MovieTitle = styled.div`
   display: flex;

@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 export const MovieCardContainer = styled.div`
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 0 5px 10px 5px;
 `;
 

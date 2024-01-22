@@ -72,15 +72,18 @@ export const MovieBox = styled.div`
   &::-webkit-scrollbar-track {
     background-color: #fcfcfc;
   }
-  @media screen and (min-width: 950px) {
-    &:hover {
-      &::-webkit-scrollbar {
-        width: 7px;
-      }
-    }
+  &:hover {
     &::-webkit-scrollbar {
-      width: 0;
-      background-color: white;
+      width: 7px;
+    }
+  }
+  &::-webkit-scrollbar {
+    width: 0;
+    background-color: white;
+  }
+  @media (min-width: 700px) {
+    &.oneRowTwoColumn {
+      grid-template-columns: repeat(auto-fill);
     }
   }
 `;

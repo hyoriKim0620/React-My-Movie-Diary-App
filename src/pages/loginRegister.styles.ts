@@ -41,6 +41,10 @@ export const Input = styled.input`
   border-radius: 5px;
   text-align: left;
   font-size: 15px;
+
+  /* iOS에서의 스타일 초기화 */
+  appearance: none;
+  '-webkit-appearance': 'none';
 `;
 
 export const Button = styled.button`
